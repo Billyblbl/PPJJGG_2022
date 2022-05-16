@@ -13,24 +13,29 @@ using UnityEditor;
 
 public class FPController : MonoBehaviour {
 
+	[Header("Components")]
 	public Rigidbody?	rb;
 	public PlayerInput? input;
-	public Transform?	pov;
+	public Transform?	POV;
 
+	[Header("Movement")]
 	public Vector3 movementPlaneNormal = Vector3.up;
-	public Vector3 feet;
-	public float feetRadius = .5f;
-	public float jumpForce = 10f;
-
 	public Vector2 speeds = Vector2.one;
+
+	[Header("Aim")]
 	public float mouseAimSensitivity = 1f;
 	public float stickAimSensitivity = 10f;
 	public float minPitch = -179;
 	public float maxPitch = 179;
 
+	[Header("Jumping")]
+	public Vector3 feet;
+	public float feetRadius = .5f;
+	public float jumpForce = 10f;
+
 	public Vector3 InputToWorldMovement(Vector2 input) => (
-		Vector3.ProjectOnPlane(pov!.right, movementPlaneNormal).normalized * input.x * speeds.x +
-		Vector3.ProjectOnPlane(pov!.forward, movementPlaneNormal).normalized * input.y * speeds.y
+		Vector3.ProjectOnPlane(POV!.right, movementPlaneNormal).normalized * input.x * speeds.x +
+		Vector3.ProjectOnPlane(POV!.forward, movementPlaneNormal).normalized * input.y * speeds.y
 	);
 
 	public Vector3 conservedVelocity { get => Vector3.Project(rb!.velocity, movementPlaneNormal); }
@@ -39,10 +44,10 @@ public class FPController : MonoBehaviour {
 
 	public void UpdateAim(Vector2 aim, float dt) {
 		transform.Rotate(Vector3.up * aim.x * dt);
-		var angle = Vector3.SignedAngle(transform.forward, pov!.forward, transform.right);
+		var angle = Vector3.SignedAngle(transform.forward, POV!.forward, transform.right);
 		var desiredAngle = Mathf.Clamp(angle - aim.y * dt, minPitch, maxPitch);
 		var diff = desiredAngle - angle;
-		pov.Rotate(Vector3.right * diff, Space.Self);
+		POV.Rotate(Vector3.right * diff, Space.Self);
 	}
 
 	public void UpdateMovement(Vector2 movement) => rb!.velocity = conservedVelocity + InputToWorldMovement(movement);

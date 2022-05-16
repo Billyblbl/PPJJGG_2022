@@ -850,16 +850,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1347854084}
   input: {fileID: 1347854088}
-  pov: {fileID: 191546143}
+  POV: {fileID: 191546143}
   movementPlaneNormal: {x: 0, y: 1, z: 0}
-  feet: {x: 0, y: -0.8358447, z: 0}
-  feetRadius: 0.37727404
-  jumpForce: 5
   speeds: {x: 3, y: 5}
   mouseAimSensitivity: 1
   stickAimSensitivity: 200
   minPitch: -89
   maxPitch: 89
+  feet: {x: 0, y: -0.8358447, z: 0}
+  feetRadius: 0.37727404
+  jumpForce: 5
 --- !u!114 &1347854088
 MonoBehaviour:
   m_ObjectHideFlags: 0
