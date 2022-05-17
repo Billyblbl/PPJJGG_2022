@@ -76,13 +76,7 @@ MonoBehaviour:
   agent: {fileID: 4212367741057341056}
   anim: {fileID: 1016399054019710878}
   eye: {fileID: 5116541981141118198}
-  perception:
-  - radius: 75
-    angle: 45
-  - radius: 30
-    angle: 90
-  - radius: 5
-    angle: 360
+  perception: {fileID: 5081614289004863035}
   eyeRotationSpring: 10
   lostPlayerTime: 1
 --- !u!95 &1016399054019710878
@@ -9917,3 +9911,28 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4650849178408667933}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5497289301223437900 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 60324f190b021884d8a7e98256e89e0c,
+    type: 3}
+  m_PrefabInstance: {fileID: 4650849178408667933}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5081614289004863035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5497289301223437900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c643586fd52364a4298378c12dd6b623, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  perception:
+  - radius: 5
+    angle: 360
+  - radius: 15
+    angle: 90
+  - radius: 50
+    angle: 40

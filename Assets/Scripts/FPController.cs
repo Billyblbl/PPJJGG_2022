@@ -17,6 +17,7 @@ public class FPController : MonoBehaviour {
 	public Rigidbody?	rb;
 	public PlayerInput? input;
 	public Transform?	POV;
+	public Perception? perception;
 
 	[Header("Movement")]
 	public Vector3 movementPlaneNormal = Vector3.up;
