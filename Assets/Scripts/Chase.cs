@@ -10,7 +10,7 @@ public class Chase : MonoBehaviour {
 	public EyeEnemyController? controller;
 
 	private void Update() {
-		controller?.eye?.LookAt(controller!.player!.transform, Vector3.up);
+		controller?.LookAtPlayer(Time.deltaTime);
 		agent!.destination = controller?.player?.transform.position ?? transform.position;
 	}
 

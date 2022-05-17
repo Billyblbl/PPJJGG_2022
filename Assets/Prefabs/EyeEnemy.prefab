@@ -83,6 +83,8 @@ MonoBehaviour:
     angle: 90
   - radius: 5
     angle: 360
+  eyeRotationSpring: 10
+  lostPlayerTime: 1
 --- !u!95 &1016399054019710878
 Animator:
   serializedVersion: 4

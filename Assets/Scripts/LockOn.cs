@@ -22,12 +22,12 @@ public class LockOn : MonoBehaviour {
 	Quaternion initialEyeRot;
 	private void Update() {
 
-		controller?.eye?.LookAt(controller!.player!.transform, Vector3.up);
+		controller?.LookAtPlayer(Time.deltaTime);
 		if (Time.time - startLockOn > lockOnTime) anim!.SetBool("LockedOn", true);
 	}
 
 	private void OnDisable() {
-		controller!.eye!.localRotation = initialEyeRot;
+		// controller!.eye!.localRotation = initialEyeRot;
 	}
 
 }
