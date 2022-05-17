@@ -11,6 +11,11 @@ GameObject:
   - component: {fileID: 2175763158757860786}
   - component: {fileID: 4212367741057341056}
   - component: {fileID: 1596712869039507901}
+  - component: {fileID: 1016399054019710878}
+  - component: {fileID: 7214078307365068674}
+  - component: {fileID: 6429397378723803921}
+  - component: {fileID: 6307221933410116324}
+  - component: {fileID: 1683845503049389675}
   m_Layer: 8
   m_Name: EyeEnemy
   m_TagString: Untagged
@@ -69,8 +74,104 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 4212367741057341056}
-  viewPerceptionRadius: 5
-  viewPerceptionConeAngle: 45
+  anim: {fileID: 1016399054019710878}
+  eye: {fileID: 5116541981141118198}
+  perception:
+  - radius: 75
+    angle: 45
+  - radius: 30
+    angle: 90
+  - radius: 5
+    angle: 360
+--- !u!95 &1016399054019710878
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 551330463208825695}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d43e9ee1c1dd4eb478fff8890b7a5057, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7214078307365068674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 551330463208825695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 198835a99f59c5c4780654f6ea9e5c39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 1016399054019710878}
+  targetLayer: Decisions
+  states:
+  - name: Idle
+    behaviour: {fileID: 0}
+  - name: Patrol
+    behaviour: {fileID: 6429397378723803921}
+  - name: Lock On
+    behaviour: {fileID: 6307221933410116324}
+  - name: Chase
+    behaviour: {fileID: 1683845503049389675}
+  - name: Attack
+    behaviour: {fileID: 0}
+--- !u!114 &6429397378723803921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 551330463208825695}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60fb93d46c2a8894694114b27f27c4f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 4212367741057341056}
+  points: []
+  cycle: 1
+--- !u!114 &6307221933410116324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 551330463208825695}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee18b8cd226891f4c86beac7c587a3bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 1016399054019710878}
+  controller: {fileID: 1596712869039507901}
+  lockOnTime: 3
+--- !u!114 &1683845503049389675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 551330463208825695}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b625ccd6530880840b2a3dccbf3378c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 4212367741057341056}
+  controller: {fileID: 1596712869039507901}
 --- !u!1 &1149326648242450889
 GameObject:
   m_ObjectHideFlags: 0
