@@ -34,6 +34,12 @@ public class FPController : MonoBehaviour {
 	public float feetRadius = .5f;
 	public float jumpForce = 10f;
 
+	[Header("Peek a boo")]
+	public float peekABooDuration = 4f;
+	public float peekABooCooldown = 5f;
+	float lastPeekABoo = 0f;
+
+
 	public Vector3 InputToWorldMovement(Vector2 input) => (
 		Vector3.ProjectOnPlane(POV!.right, movementPlaneNormal).normalized * input.x * speeds.x +
 		Vector3.ProjectOnPlane(POV!.forward, movementPlaneNormal).normalized * input.y * speeds.y
@@ -57,6 +63,13 @@ public class FPController : MonoBehaviour {
 		UpdateAim(input!.actions["Aim"].ReadValue<Vector2>(), input.currentControlScheme == "Gamepad" ? Time.deltaTime * stickAimSensitivity : mouseAimSensitivity);
 		UpdateMovement(input!.actions["Movement"].ReadValue<Vector2>());
 		if (input!.actions["Jump"].triggered && grounded) rb!.velocity += movementPlaneNormal * jumpForce;
+		if (input!.actions["HideEyes"].triggered && lastPeekABoo + peekABooDuration + peekABooCooldown < Time.time) {
+			perception!.enabled = false;
+			lastPeekABoo = Time.time;
+			//TODO hide vision
+		}
+
+		if (perception!.enabled == false && lastPeekABoo + peekABooDuration < Time.time) perception!.enabled = true;
 	}
 
 }

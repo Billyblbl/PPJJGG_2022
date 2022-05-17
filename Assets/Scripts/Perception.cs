@@ -10,7 +10,7 @@ using UnityEditor.IMGUI.Controls;
 
 public class Perception : MonoBehaviour {
 	public Cone[] perception = new Cone[0];
-	public bool Perceived(Transform obj, int layerMask) => perception.Any(cone => cone.Contains(transform, obj.position)) && (
+	public bool Perceived(Transform obj, int layerMask) => enabled && perception.Any(cone => cone.Contains(transform, obj.position)) && (
 		!Physics.Raycast(
 			transform.position,
 			obj.transform.position - transform.position,
@@ -19,6 +19,8 @@ public class Perception : MonoBehaviour {
 			layerMask
 		) || hit.collider.gameObject == obj.gameObject
 	);
+
+	private void Update() {}
 }
 
 #if UNITY_EDITOR
