@@ -19,6 +19,7 @@ public class EyeEnemyController : MonoBehaviour {
 	public Perception? perception;
 	public float eyeRotationSpring = 0f;
 	public float lostPlayerTime = 1f;
+	public float attackRange = .2f;
 	float lastSeenPlayer = 0f;
 	[System.NonSerialized] public FPController?	player;
 
@@ -38,9 +39,26 @@ public class EyeEnemyController : MonoBehaviour {
 			var seeStatus = sees || (saw && Time.time - lastSeenPlayer < lostPlayerTime);
 			anim.SetBool("SeePlayer", seeStatus);
 			anim.SetBool("LockedOn", anim.GetBool("LockedOn") && sees);
+			anim.SetBool("PlayerInAttackRange", player != null && Vector3.Distance(player.transform.position, transform.position) < attackRange);
 		}
 	}
 
 	public Quaternion LookAtPlayer(float dt) => eye!.rotation = Quaternion.Lerp(eye.rotation, Quaternion.LookRotation(player!.transform.position - eye.position, Vector3.up), dt * eyeRotationSpring);
 
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(EyeEnemyController))] public class EyeEnemyControllerEditor : Editor {
+	private void OnSceneGUI() {
+		var t = (target as EyeEnemyController)!;
+
+		EditorGUI.BeginChangeCheck();
+		var newRange = Handles.RadiusHandle(t.transform.rotation, t.transform.position, t.attackRange);
+		if (EditorGUI.EndChangeCheck()) {
+			Undo.RecordObject(t, "Update attack range");
+			t.attackRange = newRange;
+		}
+	}
+
+}
+#endif
