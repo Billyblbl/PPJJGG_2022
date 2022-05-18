@@ -26,7 +26,7 @@ public class Patrol : MonoBehaviour {
 	}
 
 	private void OnEnable() {
-		agent!.destination = points[current];
+		if (points.Length > 0) agent!.destination = points[current];
 	}
 
 	private void OnDisable() {

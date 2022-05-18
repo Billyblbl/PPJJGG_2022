@@ -10159,12 +10159,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   perception:
-  - radius: 5
+  - radius: 4
     angle: 360
-  - radius: 15
-    angle: 90
-  - radius: 50
-    angle: 40
+  - radius: 10
+    angle: 45
 --- !u!4 &2173776280570888477 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 60324f190b021884d8a7e98256e89e0c,

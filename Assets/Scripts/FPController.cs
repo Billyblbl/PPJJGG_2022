@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.InputSystem;
 
 
@@ -18,6 +19,7 @@ public class FPController : MonoBehaviour {
 	public PlayerInput? input;
 	public Transform?	POV;
 	public Perception? perception;
+	public PlayableDirector? dir;
 
 	[Header("Movement")]
 	public Vector3 movementPlaneNormal = Vector3.up;
@@ -63,10 +65,12 @@ public class FPController : MonoBehaviour {
 		UpdateAim(input!.actions["Aim"].ReadValue<Vector2>(), input.currentControlScheme == "Gamepad" ? Time.deltaTime * stickAimSensitivity : mouseAimSensitivity);
 		UpdateMovement(input!.actions["Movement"].ReadValue<Vector2>());
 		if (input!.actions["Jump"].triggered && grounded) rb!.velocity += movementPlaneNormal * jumpForce;
-		if (input!.actions["HideEyes"].triggered && lastPeekABoo + peekABooDuration + peekABooCooldown < Time.time) {
+		if (input!.actions["HideEyes"].triggered && (lastPeekABoo < float.Epsilon || lastPeekABoo + peekABooDuration + peekABooCooldown < Time.time)) {
 			perception!.enabled = false;
 			lastPeekABoo = Time.time;
-			//TODO hide vision
+			//@Note fixed time animation, will need to change the animation if we want to tweak the peek a boo time
+			// anim?.Play("PeekABoo_Player");
+			dir?.Play();
 		}
 
 		if (perception!.enabled == false && lastPeekABoo + peekABooDuration < Time.time) perception!.enabled = true;
