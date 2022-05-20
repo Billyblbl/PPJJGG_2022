@@ -28,6 +28,9 @@ public class FPController : MonoBehaviour {
 	[Header("Movement")]
 	public Vector3 movementPlaneNormal = Vector3.up;
 	public Vector2 speeds = Vector2.one;
+	public float stepHeight = .1f;
+	public float stepSpring = 0.5f;
+	public Vector3 stepFeet;
 
 	[Header("Aim")]
 	public float mouseAimSensitivity = 1f;
@@ -41,7 +44,7 @@ public class FPController : MonoBehaviour {
 	public Sprite? KBMouseBinding;
 
 	[Header("Jumping")]
-	public Vector3 feet;
+	public Vector3 groundingFeet;
 	public float feetRadius = .5f;
 	public float jumpForce = 10f;
 
@@ -58,7 +61,7 @@ public class FPController : MonoBehaviour {
 
 	public Vector3 conservedVelocity { get => Vector3.Project(rb!.velocity, movementPlaneNormal); }
 
-	public bool grounded { get => Physics.OverlapSphere(transform.TransformPoint(feet), feetRadius, LayerMask.GetMask("Physical", "Default")).Length > 0; }
+	public bool grounded { get => Physics.OverlapSphere(transform.TransformPoint(groundingFeet), feetRadius, LayerMask.GetMask("Physical", "Default")).Length > 0; }
 
 	public void UpdateAim(Vector2 aim, float dt) {
 		transform.Rotate(Vector3.up * aim.x * dt);
@@ -85,6 +88,15 @@ public class FPController : MonoBehaviour {
 		if (perception!.enabled == false && lastPeekABoo + peekABooDuration < Time.time) perception!.enabled = true;
 
 		UpdateInteractionPrompt(input!.actions["Interact"].triggered);
+	}
+
+	void UpdateStep() {
+		if (grounded && Physics.OverlapSphere(transform.TransformPoint(stepFeet), stepHeight, LayerMask.GetMask("Physical", "Default")).Length > 0)
+			transform.Translate(movementPlaneNormal.normalized * stepSpring * stepHeight, Space.Self);
+	}
+
+	private void FixedUpdate() {
+		UpdateStep();
 	}
 
 	string promptTemplate = string.Empty;
@@ -115,11 +127,34 @@ public class FPController : MonoBehaviour {
 
 [CustomEditor(typeof(FPController))] public class FPControllerEditor : Editor {
 
+	(Vector3, float) DrawSphereArea(Transform transform, Vector3 position, float radius) {
+		var worldPos = transform.TransformPoint(position);
+		return (
+			transform.InverseTransformPoint(Handles.PositionHandle(worldPos, transform.rotation)),
+			Handles.RadiusHandle(transform.rotation, worldPos, radius)
+		);
+	}
+
 	private void OnSceneGUI() {
 		var t = (target as FPController)!;
-		var feet = t.transform.TransformPoint(t.feet);
-		t.feet = t.transform.InverseTransformPoint(Handles.PositionHandle(feet, t.transform.rotation));
-		t.feetRadius = Handles.RadiusHandle(t.transform.rotation, feet, t.feetRadius);
+
+		{
+			EditorGUI.BeginChangeCheck();
+			var newSphere = DrawSphereArea(t.transform, t.groundingFeet, t.feetRadius);
+			if (EditorGUI.EndChangeCheck()) {
+				Undo.RecordObject(t, "Update grounding feet");
+				(t.groundingFeet, t.feetRadius) = newSphere;
+			}
+		}
+
+		{
+			EditorGUI.BeginChangeCheck();
+			var newSphere = DrawSphereArea(t.transform, t.stepFeet, t.stepHeight);
+			if (EditorGUI.EndChangeCheck()) {
+				Undo.RecordObject(t, "Update step feet");
+				(t.stepFeet, t.stepHeight) = newSphere;
+			}
+		}
 
 		if (t.POV != null) {
 			EditorGUI.BeginChangeCheck();
