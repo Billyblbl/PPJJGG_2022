@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.InputSystem;
-
+using TMPro;
+using UnityEngine.UI;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,6 +21,9 @@ public class FPController : MonoBehaviour {
 	public Transform?	POV;
 	public Perception? perception;
 	public PlayableDirector? dir;
+	public GameObject? prompt;
+	public TextMeshProUGUI?	promptText;
+	public Image? promptIcon;
 
 	[Header("Movement")]
 	public Vector3 movementPlaneNormal = Vector3.up;
@@ -30,6 +34,11 @@ public class FPController : MonoBehaviour {
 	public float stickAimSensitivity = 10f;
 	public float minPitch = -179;
 	public float maxPitch = 179;
+
+	[Header("Interaction")]
+	public float interactionRange = 1f;
+	public Sprite? gamepadBinding;
+	public Sprite? KBMouseBinding;
 
 	[Header("Jumping")]
 	public Vector3 feet;
@@ -74,6 +83,29 @@ public class FPController : MonoBehaviour {
 		}
 
 		if (perception!.enabled == false && lastPeekABoo + peekABooDuration < Time.time) perception!.enabled = true;
+
+		UpdateInteractionPrompt(input!.actions["Interact"].triggered);
+	}
+
+	string promptTemplate = string.Empty;
+
+	private void Start() {
+		promptTemplate = promptText?.text ?? string.Empty;
+	}
+
+	void UpdateInteractionPrompt(bool interact) {
+		if (POV == null || prompt == null || promptText == null || promptIcon == null) return;
+
+		if (
+			Physics.Raycast(POV.position, POV.forward, out var hit, interactionRange) &&
+			hit.collider.TryGetComponent<Interaction>(out var interaction)
+		) {
+			promptText.text = string.Format(promptTemplate, interaction.prompt);
+			promptIcon.sprite = input?.currentControlScheme == "Gamepad" ? gamepadBinding : KBMouseBinding;
+			prompt.SetActive(true);
+			if (interact)
+				interaction.OnInteract?.Invoke();
+		} else prompt.SetActive(false);
 	}
 
 }
@@ -88,6 +120,16 @@ public class FPController : MonoBehaviour {
 		var feet = t.transform.TransformPoint(t.feet);
 		t.feet = t.transform.InverseTransformPoint(Handles.PositionHandle(feet, t.transform.rotation));
 		t.feetRadius = Handles.RadiusHandle(t.transform.rotation, feet, t.feetRadius);
+
+		if (t.POV != null) {
+			EditorGUI.BeginChangeCheck();
+			Handles.DrawLine(t.POV.position, t.POV.position + t.POV.forward * t.interactionRange);
+			var newRange = Handles.ScaleValueHandle(t.interactionRange, t.POV.position + t.POV.forward * t.interactionRange, t.POV.rotation, 1f, Handles.SphereHandleCap, 1f);
+			if (EditorGUI.EndChangeCheck()) {
+				Undo.RecordObject(t, "Update interaction range");
+				t.interactionRange = newRange;
+			}
+		}
 	}
 
 }

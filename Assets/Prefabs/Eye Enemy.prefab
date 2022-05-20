@@ -10050,7 +10050,7 @@ MonoBehaviour:
   perception: {fileID: 2282991403342246864}
   eyeRotationSpring: 10
   lostPlayerTime: 1
-  attackRange: 2
+  attackRange: 2.5
 --- !u!95 &6282992473345122933
 Animator:
   serializedVersion: 4
