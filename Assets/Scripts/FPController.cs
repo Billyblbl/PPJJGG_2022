@@ -29,8 +29,8 @@ public class FPController : MonoBehaviour {
 	public Vector3 movementPlaneNormal = Vector3.up;
 	public Vector2 speeds = Vector2.one;
 	public float stepHeight = .1f;
+	public float stepLength = 1f;
 	public float stepSpring = 0.5f;
-	public Vector3 stepFeet;
 
 	[Header("Aim")]
 	public float mouseAimSensitivity = 1f;
@@ -88,15 +88,17 @@ public class FPController : MonoBehaviour {
 		if (perception!.enabled == false && lastPeekABoo + peekABooDuration < Time.time) perception!.enabled = true;
 
 		UpdateInteractionPrompt(input!.actions["Interact"].triggered);
+		UpdateStep(Time.deltaTime);
 	}
 
-	void UpdateStep() {
-		if (grounded && Physics.OverlapSphere(transform.TransformPoint(stepFeet), stepHeight, LayerMask.GetMask("Physical", "Default")).Length > 0)
-			transform.Translate(movementPlaneNormal.normalized * stepSpring * stepHeight, Space.Self);
-	}
+	public Vector3 worldFeet { get => transform.TransformPoint(groundingFeet); }
 
-	private void FixedUpdate() {
-		UpdateStep();
+	void UpdateStep(float dt) {
+		var lowerHasHit = Physics.Raycast( worldFeet, Vector3.ProjectOnPlane(rb!.velocity, movementPlaneNormal), out var lowerHit, stepLength, LayerMask.GetMask("Physical", "Default"));
+		var upperHasHit = Physics.Raycast( worldFeet + transform.rotation * movementPlaneNormal * stepHeight, Vector3.ProjectOnPlane(rb!.velocity, movementPlaneNormal), out var upperHit, stepLength, LayerMask.GetMask("Physical", "Default"));
+		if (lowerHasHit && !upperHasHit) {
+			transform.Translate(movementPlaneNormal.normalized * stepSpring * stepHeight * dt, Space.Self);
+		}
 	}
 
 	string promptTemplate = string.Empty;
@@ -135,6 +137,53 @@ public class FPController : MonoBehaviour {
 		);
 	}
 
+	float CircleRadiusHandle(Vector3 position, Quaternion rotation, float radius, float capSize = 0.1f, float increments = 0.001f, Handles.CapFunction? caps = null) {
+		Handles.DrawWireDisc(position, rotation * Vector3.up, radius);
+
+		var forward = rotation * Vector3.forward;
+		var back = rotation * Vector3.back;
+		var left = rotation * Vector3.left;
+		var right = rotation * Vector3.right;
+
+		var localCaps = caps ?? Handles.DotHandleCap;
+
+		var newRadius = (Handles.Slider(position + forward * radius, forward, capSize, localCaps, increments) - position).magnitude;
+		newRadius = (Handles.Slider(position + back * newRadius, back, capSize, localCaps, increments) - position).magnitude;
+		newRadius = (Handles.Slider(position + left * newRadius, left, capSize, localCaps, increments) - position).magnitude;
+		newRadius = (Handles.Slider(position + right * newRadius, right, capSize, localCaps, increments) - position).magnitude;
+		return newRadius;
+	}
+
+	(float, float) DrawCylinderArea(Vector3 position, Quaternion rotation, float radius, float height) {
+		var lower = position;
+		var upper = position + rotation * Vector3.up * height;
+
+		var capSize = HandleUtility.GetHandleSize(position) * 0.025f;
+		var increments = 0.001f;
+		Handles.CapFunction caps = Handles.DotHandleCap;
+
+		var newRadius = CircleRadiusHandle(lower, rotation, radius, capSize, increments, caps);
+		newRadius = CircleRadiusHandle(upper, rotation, newRadius, capSize, increments, caps);
+
+		var leftOffset = rotation * Vector3.left * newRadius;
+		var rightOffset = rotation * Vector3.right * newRadius;
+		var forwardOffset = rotation * Vector3.forward * newRadius;
+		var backOffset = rotation * Vector3.back * newRadius;
+
+		Handles.DrawLine(lower, upper);
+		Handles.DrawLine(lower + leftOffset, upper + leftOffset);
+		Handles.DrawLine(lower + rightOffset, upper + rightOffset);
+		Handles.DrawLine(lower + forwardOffset, upper + forwardOffset);
+		Handles.DrawLine(lower + backOffset, upper + backOffset);
+
+		var color = Handles.color;
+		Handles.color = Color.cyan;
+		var newHeight = (Handles.Slider(position + rotation * Vector3.up * height, rotation * Vector3.up, capSize * 2f, caps, increments) - position).magnitude;
+		Handles.color = color;
+
+		return (newHeight, newRadius);
+	}
+
 	private void OnSceneGUI() {
 		var t = (target as FPController)!;
 
@@ -149,10 +198,10 @@ public class FPController : MonoBehaviour {
 
 		{
 			EditorGUI.BeginChangeCheck();
-			var newSphere = DrawSphereArea(t.transform, t.stepFeet, t.stepHeight);
+			var newCylinder = DrawCylinderArea(t.worldFeet, t.transform.rotation, t.stepLength, t.stepHeight);
 			if (EditorGUI.EndChangeCheck()) {
-				Undo.RecordObject(t, "Update step feet");
-				(t.stepFeet, t.stepHeight) = newSphere;
+				Undo.RecordObject(t, "Update stepping");
+				(t.stepHeight, t.stepLength) = newCylinder;
 			}
 		}
 
