@@ -921,7 +921,8 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   fadeOutTime: 1
-  targetScene: PlayScene
+  targetScene: Level1
+  targetSceneIndex: 0
 --- !u!1 &458326453
 GameObject:
   m_ObjectHideFlags: 0
