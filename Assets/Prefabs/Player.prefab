@@ -365,7 +365,7 @@ MonoBehaviour:
   stickAimSensitivity: 200
   minPitch: -89
   maxPitch: 89
-  interactionRange: 1.5
+  interactionRange: 1.176987
   gamepadBinding: {fileID: -1908750611, guid: 19b3d5451fae7884caa0c15891833422, type: 3}
   KBMouseBinding: {fileID: -1614893548, guid: cc5080650d179434aa319a996a8835e1, type: 3}
   groundingFeet: {x: 0, y: -0.8434607, z: 0}
