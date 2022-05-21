@@ -15,7 +15,8 @@ using UnityEngine.AI;
 public class Patrol : MonoBehaviour {
 
 	public NavMeshAgent?	agent;
-	public AudioSource? sfxLoseSight;
+	public AudioSource? source;
+	public AudioClip? sfxLoseSight;
 	public Vector3[] points = new Vector3[0];
 	public bool cycle = true;
 	int current = 0;
@@ -28,10 +29,14 @@ public class Patrol : MonoBehaviour {
 
 	private void OnEnable() {
 		if (points.Length > 0) agent!.destination = points[current];
-		sfxLoseSight?.Play();
+		// Debug.Log("Playing sfxLoseSight");
+		source!.enabled = true;
+		source.clip = sfxLoseSight;
+		source.Play();
 	}
 
 	private void OnDisable() {
+		source!.enabled = false;
 		agent!.destination = transform.position;
 	}
 

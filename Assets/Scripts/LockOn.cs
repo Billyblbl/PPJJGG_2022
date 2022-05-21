@@ -9,7 +9,8 @@ public class LockOn : MonoBehaviour {
 
 	public Animator? anim;
 	public EyeEnemyController? controller;
-	public AudioSource? sfx;
+	public AudioSource? source;
+	public AudioClip? sfx;
 
 	public float lockOnTime = 3f;
 
@@ -18,9 +19,10 @@ public class LockOn : MonoBehaviour {
 	private void OnEnable() {
 		startLockOn = Time.time;
 		initialEyeRot = controller?.eye?.localRotation ?? Quaternion.identity;
-		if (sfx != null) {
-			sfx.enabled = true;
-			sfx.Play();
+		if (source != null) {
+			source.enabled = true;
+			source.clip = sfx;
+			source.Play();
 		}
 	}
 
@@ -32,8 +34,8 @@ public class LockOn : MonoBehaviour {
 	}
 
 	private void OnDisable() {
-		if (sfx != null) {
-			sfx.enabled = false;
+		if (source != null) {
+			source.enabled = false;
 		}
 	}
 
