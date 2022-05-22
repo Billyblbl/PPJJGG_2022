@@ -104,6 +104,8 @@ public class FPController : MonoBehaviour {
 	string promptTemplate = string.Empty;
 
 	private void Start() {
+		Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
 		promptTemplate = promptText?.text ?? string.Empty;
 	}
 

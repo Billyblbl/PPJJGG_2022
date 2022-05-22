@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 0db6c3aca0b6bc34289b7022dcf8074a
+  - enabled: 1
     path: Assets/Scenes/Hall.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
@@ -14,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Storage.unity
     guid: 1b527d4fcfa35f4439b28a0d10bbfb3c
+  - enabled: 1
+    path: Assets/Scenes/WinScreen.unity
+    guid: 3175a2219f5984b4cab8e2545725b650
+  - enabled: 1
+    path: Assets/Scenes/LoseScreen.unity
+    guid: 809a843cbc28ede4399e86e91c01e109
   m_configObjects: {}

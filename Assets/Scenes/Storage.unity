@@ -843,19 +843,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7581607735386863403, guid: ca05cc1fbf111dc438b477a5a514bd03,
         type: 3}
-      propertyPath: m_SceneBindings.Array.data[4].key
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7581607735386863403, guid: ca05cc1fbf111dc438b477a5a514bd03,
-        type: 3}
       propertyPath: m_SceneBindings.Array.data[3].value
       value: 
       objectReference: {fileID: 1824663112}
-    - target: {fileID: 7581607735386863403, guid: ca05cc1fbf111dc438b477a5a514bd03,
-        type: 3}
-      propertyPath: m_SceneBindings.Array.data[4].value
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca05cc1fbf111dc438b477a5a514bd03, type: 3}
 --- !u!1 &72693677
@@ -2521,8 +2511,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 49.8, y: 13.461, z: 19.744}
+  m_LocalRotation: {x: 0, y: 0.72116303, z: 0, w: 0.6927654}
+  m_LocalPosition: {x: 11.9624195, y: 14.035, z: 30.090456}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3146,7 +3136,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  prompt: Exit
+  prompt: Escape
 --- !u!114 &414770029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3190,7 +3180,7 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   fadeOutTime: 1
-  targetScene: Assets/Scenes/Hall.unity
+  targetScene: Assets/Scenes/WinScreen.unity
 --- !u!1001 &415726978
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4943,19 +4933,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7581607735386863403, guid: ca05cc1fbf111dc438b477a5a514bd03,
         type: 3}
-      propertyPath: m_SceneBindings.Array.data[4].key
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7581607735386863403, guid: ca05cc1fbf111dc438b477a5a514bd03,
-        type: 3}
       propertyPath: m_SceneBindings.Array.data[3].value
       value: 
       objectReference: {fileID: 1824663112}
-    - target: {fileID: 7581607735386863403, guid: ca05cc1fbf111dc438b477a5a514bd03,
-        type: 3}
-      propertyPath: m_SceneBindings.Array.data[4].value
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca05cc1fbf111dc438b477a5a514bd03, type: 3}
 --- !u!1 &695214398 stripped
@@ -13450,18 +13430,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7581607735386863403, guid: ca05cc1fbf111dc438b477a5a514bd03,
         type: 3}
-      propertyPath: m_SceneBindings.Array.data[4].key
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7581607735386863403, guid: ca05cc1fbf111dc438b477a5a514bd03,
-        type: 3}
       propertyPath: m_SceneBindings.Array.data[3].value
       value: 
       objectReference: {fileID: 1824663112}
-    - target: {fileID: 7581607735386863403, guid: ca05cc1fbf111dc438b477a5a514bd03,
-        type: 3}
-      propertyPath: m_SceneBindings.Array.data[4].value
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca05cc1fbf111dc438b477a5a514bd03, type: 3}
